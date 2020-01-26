@@ -1,0 +1,72 @@
+application:
+  secured: true
+
+cors:
+  origins:
+  - "http://localhost:4200"
+  - "http://nt-ca-aqe-library.local.pcfdev.io"
+  - "https://nt-ca-aqe-library.cfapps.io"
+  methods:
+  - "GET"
+  - "POST"
+  - "PUT"
+  - "DELETE"
+
+info:
+  application: "Library Service"
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%X{correlationId}]){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"
+  level:
+    root: info
+    library.service: debug
+
+users:
+  admin:
+    username: "admin"
+    password: "admin"
+  curator:
+    username: "curator"
+    password: "curator"
+  user:
+    username: "user"
+    password: "user"
+
+spring:
+  data:
+    mongodb:
+      database: "library"
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    beans:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    conditions:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+    scheduledtasks:
+      enabled: true
+    httptrace:
+      enabled: true
+    mappings:
+      enabled: true
+    prometheus:
+      enabled: true
