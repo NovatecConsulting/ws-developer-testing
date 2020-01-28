@@ -59,7 +59,7 @@ internal class ReturnBookToCollectionTests {
     }
 
     @Test
-    fun `events are send`() {
+    fun `events are sent`() {
         val eventSlot = slot<BookReturned>()
         every { eventDispatcher.dispatch(capture(eventSlot)) } returns Unit
         every { dataStore.findById(id) } returns borrowedBookRecord
@@ -88,7 +88,7 @@ internal class ReturnBookToCollectionTests {
     }
 
     @Test
-    fun `events are not send`() {
+    fun `events are not sent`() {
         every { dataStore.findById(id) } throws RuntimeException()
         assertThrows<RuntimeException> {
             cut.returnBook(id)
