@@ -1,5 +1,21 @@
 from dataclasses import dataclass
+from datetime import datetime
 from uuid import UUID
+
+
+class BookState:
+    pass
+
+
+@dataclass
+class Available(BookState):
+    pass
+
+
+@dataclass
+class Borrowed(BookState):
+    by: str
+    on: datetime
 
 
 @dataclass
@@ -12,9 +28,10 @@ class Book:
 class BookRecord:
     id: UUID
     book: Book
+    state: BookState
 
 
 @dataclass
-class BookAddedEvent:
+class BookAdded:
     id: UUID
     book_record: BookRecord

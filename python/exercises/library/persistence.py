@@ -16,3 +16,6 @@ class BookDataStore:
 
     def find_by_id(self, id: UUID) -> Optional[BookRecord]:
         return self.database.get(id)
+
+    def exists_by_id(self, id: UUID) -> bool:
+        return self.find_by_id(id) is not None

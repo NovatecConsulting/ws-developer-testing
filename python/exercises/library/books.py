@@ -6,13 +6,16 @@ from uuid import uuid4
 
 
 class BookIdGenerator:
-    def __init__(self):
+    def __init__(self, data_store: BookDataStore):
         self.name = "book ID generator"
+        self.data_store = data_store
 
     def generate(self) -> UUID:
-        uuid = uuid4()
-        print(f"{self.name} - generated: {uuid}")
-        return uuid
+        book_id = uuid4()
+        if self.data_store.exists_by_id(book_id):
+            book_id = self.generate()
+        print(f"{self.name} - generated: {book_id}")
+        return book_id
 
 
 class BookCollection:
@@ -24,9 +27,10 @@ class BookCollection:
 
     def add_book(self, book: Book) -> BookRecord:
         uuid = self.id_generator.generate()
-        book_record = BookRecord(uuid, book)
-        self.event_dispatcher.dispatch(BookAddedEvent(uuid4(), book_record))
-        return self.data_store.create_or_update(book_record)
+        book_record = BookRecord(uuid, book, Available())
+        book_record = self.data_store.create_or_update(book_record)
+        self.event_dispatcher.dispatch(BookAdded(uuid4(), book_record))
+        return book_record
 
     def get_book(self, uuid: UUID) -> BookRecord:
         found = self.data_store.find_by_id(uuid)
