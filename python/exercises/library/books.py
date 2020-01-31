@@ -1,25 +1,8 @@
-from dataclasses import dataclass
+from library.model import *
+from library.persistence import BookDataStore
+from library.events import EventDispatcher
+
 from uuid import uuid4
-from uuid import UUID
-from typing import Optional
-
-
-@dataclass
-class Book:
-    title: str
-    isbn: str
-
-
-@dataclass
-class BookRecord:
-    id: UUID
-    book: Book
-
-
-@dataclass
-class BookAddedEvent:
-    id: UUID
-    book_record: BookRecord
 
 
 class BookIdGenerator:
@@ -30,28 +13,6 @@ class BookIdGenerator:
         uuid = uuid4()
         print(f"{self.name} - generated: {uuid}")
         return uuid
-
-
-class BookDataStore:
-    def __init__(self):
-        self.name = "book data store"
-        self.database = {}
-
-    def create_or_update(self, book_record: BookRecord) -> BookRecord:
-        print(f"{self.name} - create or update: {book_record}")
-        self.database[book_record.id] = book_record
-        return book_record
-
-    def find_by_id(self, id: UUID) -> Optional[BookRecord]:
-        return self.database.get(id)
-
-
-class EventDispatcher:
-    def __init__(self):
-        self.name = "event dispatcher"
-
-    def dispatch(self, event):
-        print(f"{self.name}: {event}")
 
 
 class BookCollection:
