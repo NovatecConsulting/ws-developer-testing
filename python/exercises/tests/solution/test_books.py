@@ -104,7 +104,7 @@ class TestBorrowBookFromCollection(TestCase):
         self.cut.data_store.find_by_id.return_value = book_record
 
         with self.assertRaises(AlreadyBorrowedException):
-            borrowed_book = self.cut.borrow_book(book_id, "Bob")
+            self.cut.borrow_book(book_id, "Bob")
         self.cut.event_dispatcher.dispatch.assert_not_called()
 
     def test_borrowing_a_book_does_not_dispatch_any_events_in_case_of_an_exception(self):
