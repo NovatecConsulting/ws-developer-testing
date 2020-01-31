@@ -1,8 +1,17 @@
 from library.model import *
 from library.persistence import BookDataStore
 from library.events import EventDispatcher
+from datetime import datetime
 
 from uuid import uuid4
+
+
+class NotFoundException(Exception):
+    pass
+
+
+class AlreadyBorrowedException(Exception):
+    pass
 
 
 class BookIdGenerator:
@@ -37,3 +46,12 @@ class BookCollection:
         if found is None:
             raise Exception(f"no book record with ID [{uuid}]")
         return found
+
+    def borrow_book(self, uuid: UUID, borrower: str) -> BookRecord:
+        book_record = self.get_book(uuid)
+        if isinstance(book_record.state, Borrowed):
+            raise AlreadyBorrowedException()
+        book_record.state = Borrowed(borrower, datetime.now())
+        book_record = self.data_store.create_or_update(book_record)
+        self.event_dispatcher.dispatch(BookBorrowed(uuid4(), book_record, borrower))
+        return book_record

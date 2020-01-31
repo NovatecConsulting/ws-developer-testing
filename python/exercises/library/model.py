@@ -35,3 +35,10 @@ class BookRecord:
 class BookAdded:
     id: UUID
     book_record: BookRecord
+
+
+@dataclass
+class BookBorrowed:
+    id: UUID
+    book_record: BookRecord
+    borrower: str
