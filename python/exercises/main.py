@@ -1,7 +1,7 @@
 from library.books import *
 
-id_generator = BookIdGenerator()
 data_store = BookDataStore()
+id_generator = BookIdGenerator(data_store)
 event_dispatcher = EventDispatcher()
 
 book_collection = BookCollection(id_generator, data_store, event_dispatcher)
